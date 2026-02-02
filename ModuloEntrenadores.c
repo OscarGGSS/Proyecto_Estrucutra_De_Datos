@@ -11,37 +11,6 @@
 #include <stdlib.h>
 #include "Interfaz.h" 
 
-typedef char TsCadenaEntrenador[50];
-
-typedef struct {
-	int eDia; int eMes; int eAnio;
-} TrFechaEntrenador;
-
-typedef struct {
-	TsCadenaEntrenador sCalle; int eCP;
-	TsCadenaEntrenador sColonia; TsCadenaEntrenador sMunicipio; TsCadenaEntrenador sEstado;
-} TrDireccionEntrenador;
-
-typedef struct {
-	TsCadenaEntrenador sId; 
-	TsCadenaEntrenador sNombre;
-	TsCadenaEntrenador sApPaterno;
-	TsCadenaEntrenador sApMaterno;
-	TrFechaEntrenador rFechaNac;
-	TrFechaEntrenador rFechaContrato;
-	float fSueldoFijo;
-	TsCadenaEntrenador sTelefono;
-	TrDireccionEntrenador rDireccion;
-} TrEntrenador;
-
-typedef struct rNodoEntrenador {
-	TrEntrenador rDato;
-	struct rNodoEntrenador *pSiguiente;
-} TrNodoEntrenador;
-
-typedef TrNodoEntrenador *TpNodoEntrenador;
-
-
 //Prototipos
 int ListaVaciaEntrenador(TpNodoEntrenador);
 int ListaLlenaEntrenador(TpNodoEntrenador *);
@@ -373,3 +342,4 @@ void PlantillaBase(char *titulo) {
 	DibujarMarco(30, 2, 90, 4);
 	CentrarTexto(3, titulo);
 }
+
