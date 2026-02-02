@@ -13,21 +13,6 @@
 #include <string.h>
 #include "Interfaz.h"
 
-//Tipo
-
-typedef char TsCadena[30];
-
-typedef struct rCliente {
-	
-	TsCadena sNombre;
-	TsCadena sTelefono;
-	int eId;
-	struct rCliente *pSiguiente;
-	
-} TrCliente;
-
-typedef TrCliente *TpCliente;
-
 //Prototipos
 int ListaVacia(TpCliente);
 int ListaLlena(TpCliente *);
@@ -503,3 +488,4 @@ void CargarArchivo(TpCliente *pPrimero, TpCliente *pUltimo) {
 	fclose(pFile);
 	
 } //CargarArchivo
+
