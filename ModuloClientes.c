@@ -2,15 +2,16 @@
    Programa: ModuloClientes.c
    Autor: Islas Isis
    Fecha: 01-02-2026
-   Objetivo:El sistema registrar· los datos generales por cada cliente, se implementaran listas ligadas.
+   Objetivo:El sistema registrar√° los datos generales por cada cliente, se implementaran listas ligadas.
    Compilador: Dev-C++ 5.11
-   VersiÛn: 1.0
+   Versi√≥n: 1.0
 *** */
 
 //Bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Interfaz.h"
 
 //Tipo
 
@@ -48,55 +49,69 @@ int main (){
 	TpCliente pPrimero = NULL, pUltimo = NULL;
 	int eOpcion;
 
-    do {
+	ConfigurarConsola(120, 30);
+	Color(0, 11);
+	
+	CargarArchivo(&pPrimero, &pUltimo);
 
-        printf("\n--- Men%c de clientes ---", 163);
-        printf("\n 1. Agregar Cliente");
-        printf("\n 2. Consultar Cliente (por ID)");
-        printf("\n 3. Modificar Cliente");
-        printf("\n 4. Dar de Baja Cliente");
-        printf("\n 0. Guardar y Salir");
+	do {
+		system("cls");
+		
+		// Marco Exterior
+		DibujarMarco(2, 1, 117, 28);
+		
+		// Marco del Titulo (Estilo Entrenadores)
+		DibujarMarco(30, 2, 90, 4);
+		CentrarTexto(3, "MODULO DE CLIENTES");
 
-        printf("\n Seleccione una opcion: ");
-        scanf("%d", &eOpcion);
+		GoToXY(45, 8); printf("1. Agregar Cliente");
+		GoToXY(45, 10); printf("2. Consultar Cliente (por ID)");
+		GoToXY(45, 12); printf("3. Modificar Cliente");
+		GoToXY(45, 14); printf("4. Dar de Baja Cliente");
+		GoToXY(45, 16); printf("0. Guardar y Salir");
 
-        switch (eOpcion) {
-        	
-            case 1:
-            	
-                AgregarCliente(&pPrimero, &pUltimo);
-                break;
+		GoToXY(45, 20); printf("Seleccione una opcion: ");
+		scanf("%d", &eOpcion);
 
-            case 2:
-            	
-                ConsultarCliente(pPrimero);
-                break;
+		switch (eOpcion) {
+			
+			case 1:
+				
+				AgregarCliente(&pPrimero, &pUltimo);
+				break;
 
-            case 3:
-            	
-                ModificarCliente(pPrimero);
-                break;
+			case 2:
+				
+				ConsultarCliente(pPrimero);
+				break;
 
-            case 4:
-            	
-                DarBajaCliente(&pPrimero, &pUltimo);
-                break;
+			case 3:
+				
+				ModificarCliente(pPrimero);
+				break;
 
-            case 0:
-            	
-                GuardarArchivo(pPrimero);
-                printf("\n Saliendo del sistema...\n"); 
-                break;
+			case 4:
+				
+				DarBajaCliente(&pPrimero, &pUltimo);
+				break;
 
-            default:
-                printf("\nOpci%cn inv%clida", 162, 160);
-                break;
-        }
+			case 0:
+				
+				GoToXY(45, 24); printf("Guardando datos...");
+				GuardarArchivo(pPrimero);
+				Sleep(1000);
+				break;
 
-    } while (eOpcion != 0);
+			default:
+				GoToXY(45, 24); printf("Opcion invalida");
+				Sleep(1000);
+				break;
+		}
 
-    return 0;
-    
+	} while (eOpcion != 0);
+
+	return 0;
+	
 } //Main
 
 int ListaVacia(TpCliente pPrimero){
@@ -114,39 +129,39 @@ int ListaLlena(TpCliente *pNuevo){
 } //ListaLlena
 
 void GenerarIdCliente(TpCliente pPrimero, int *pIdClienteNuevo) {
-    
-    //Variables
-    int eMaxId;
-    TpCliente pAuxiliar;
-    
-    eMaxId = 0;
-    pAuxiliar = pPrimero;
-    
-    while (pAuxiliar != NULL) {
-        
-        if (pAuxiliar->eId > eMaxId) {
-        	
-            eMaxId = pAuxiliar->eId;
-            
-        }
-        
-        pAuxiliar = pAuxiliar->pSiguiente;
-        
-    }
-    
-    *pIdClienteNuevo = eMaxId + 1;
-    
+	
+	//Variables
+	int eMaxId;
+	TpCliente pAuxiliar;
+	
+	eMaxId = 0;
+	pAuxiliar = pPrimero;
+	
+	while (pAuxiliar != NULL) {
+		
+		if (pAuxiliar->eId > eMaxId) {
+			
+			eMaxId = pAuxiliar->eId;
+			
+		}
+		
+		pAuxiliar = pAuxiliar->pSiguiente;
+		
+	}
+	
+	*pIdClienteNuevo = eMaxId + 1;
+	
 } //GenerarIdCliente
 
 void PrepararNodo(TpCliente pNuevo, int eIdNuevo, TsCadena sNom, TsCadena sTel) {
-    
-    pNuevo->eId = eIdNuevo;
-    
-    strcpy(pNuevo->sNombre, sNom);
-    strcpy(pNuevo->sTelefono, sTel);
-    
-    pNuevo->pSiguiente = NULL;
-    
+	
+	pNuevo->eId = eIdNuevo;
+	
+	strcpy(pNuevo->sNombre, sNom);
+	strcpy(pNuevo->sTelefono, sTel);
+	
+	pNuevo->pSiguiente = NULL;
+	
 } //PrepararNodo
 
 
@@ -167,299 +182,324 @@ void AgregarDespuesDeUltimo (TpCliente *pUltimo , TpCliente pNuevo){
 void AgregarCliente(TpCliente *pPrimero, TpCliente *pUltimo) {
 	
 	//Variables
-    TpCliente pNuevo;
-    int eIdNuevo;
-    TsCadena sNom, sTel;
+	TpCliente pNuevo;
+	int eIdNuevo;
+	TsCadena sNom, sTel;
 
-    if (ListaLlena(&pNuevo)) {
-    	
-        printf("\n Error: No se pueden agregar m%cs clientes", 160);
-        
-    }
+	system("cls");
+	DibujarMarco(2, 1, 117, 28);
+	DibujarMarco(30, 8, 90, 20);
+	CentrarTexto(10, "REGISTRO DE CLIENTE");
 
-    GenerarIdCliente(*pPrimero, &eIdNuevo);
+	if (ListaLlena(&pNuevo)) {
+		
+		GoToXY(40, 25); printf("Error: No se pueden agregar mas clientes");
+		system("pause");
+		return;
+	}
 
-    printf("\n--- Registro de nuevo cliente con el ID: %d ---\n", eIdNuevo);
-    printf("\nIngrese el nombre (1er nombre y 1er apellido): ");
-    fflush(stdin);
-    gets(sNom);
-    
-    printf("\nIngrese el n%cmero de telefono: ", 163);
-    fflush(stdin);
-    gets(sTel);
+	GenerarIdCliente(*pPrimero, &eIdNuevo);
 
-    PrepararNodo(pNuevo, eIdNuevo, sNom, sTel);
+	GoToXY(40, 12); printf("ID Asignado: %d", eIdNuevo);
+	GoToXY(40, 14); printf("Nombre: ");
+	fflush(stdin);
+	gets(sNom);
+	
+	GoToXY(40, 16); printf("Telefono: ");
+	fflush(stdin);
+	gets(sTel);
 
-    if (ListaVacia(*pPrimero)) {
-    	
-        AgregarEnListaVacia(pPrimero, pUltimo, pNuevo);
-        
-    } else {
-    	
-        AgregarDespuesDeUltimo(pUltimo, pNuevo);
-        
-    }
+	PrepararNodo(pNuevo, eIdNuevo, sNom, sTel);
 
-    printf("\nEl registro se realiz%c con %cxito", 162, 130);
-    
+	if (ListaVacia(*pPrimero)) {
+		
+		AgregarEnListaVacia(pPrimero, pUltimo, pNuevo);
+		
+	} else {
+		
+		AgregarDespuesDeUltimo(pUltimo, pNuevo);
+		
+	}
+
+	GoToXY(40, 25); printf("El registro se realizo con exito");
+	system("pause");
+	
 } //AgregarCliente
 
 void DarBajaCliente(TpCliente *pPrimero, TpCliente *pUltimo) {
 	
 	//Variables
-    int eIdBuscar;
-    char cOpcion; 
-    TpCliente pActual, pAnterior = NULL;
+	int eIdBuscar;
+	char cOpcion; 
+	TpCliente pActual, pAnterior = NULL;
 
-    if (ListaVacia(*pPrimero)) {
-    	
-        printf("\nNo hay clientes para dar de baja");
-        
-        return;
-    }
+	system("cls");
+	DibujarMarco(2, 1, 117, 28);
+	CentrarTexto(3, "BAJA DE CLIENTE");
 
-    printf("\nIngrese el ID del cliente a dar de baja: ");
-    scanf("%d", &eIdBuscar);
-    fflush(stdin);
+	if (ListaVacia(*pPrimero)) {
+		
+		GoToXY(40, 12); printf("No hay clientes para dar de baja");
+		system("pause");
+		return;
+	}
 
-    pActual = *pPrimero;
+	GoToXY(40, 10); printf("Ingrese el ID del cliente: ");
+	scanf("%d", &eIdBuscar);
+	fflush(stdin);
 
-    while (pActual != NULL && pActual->eId != eIdBuscar) {
-    	
-        pAnterior = pActual;
-        pActual = pActual->pSiguiente;
-        
-    }
+	pActual = *pPrimero;
 
-    if (pActual == NULL) {
-    	
-        printf("\nError: El ID (%d) no existe", eIdBuscar);
-        
-    } else {
-    	
-        printf("\n-- Datos del cliente --");
-        printf("\nID: %d", pActual->eId);
-        printf("\nNombre: %s", pActual->sNombre);
-        printf("\nTelefono: %s\n", pActual->sTelefono);
+	while (pActual != NULL && pActual->eId != eIdBuscar) {
+		
+		pAnterior = pActual;
+		pActual = pActual->pSiguiente;
+		
+	}
+
+	if (pActual == NULL) {
+		
+		GoToXY(40, 14); printf("Error: El ID (%d) no existe", eIdBuscar);
+		
+	} else {
+		
+		DibujarMarco(35, 12, 85, 20);
+		GoToXY(40, 14); printf("ID: %d", pActual->eId);
+		GoToXY(40, 16); printf("Nombre: %s", pActual->sNombre);
+		GoToXY(40, 18); printf("Telefono: %s", pActual->sTelefono);
 
 
-        printf("\nøDesea borrar este cliente? (S/N): ");
-        scanf(" %c", &cOpcion); 
-        fflush(stdin);
+		GoToXY(40, 22); printf("Desea borrar este cliente? (S/N): ");
+		scanf(" %c", &cOpcion); 
+		fflush(stdin);
 
-        if (cOpcion == 'S' || cOpcion == 's') {
-        	
-            if (pActual == *pPrimero) {
-            	
-                *pPrimero = (*pPrimero)->pSiguiente;
-                
-                if (*pPrimero == NULL) *pUltimo = NULL;
-                
-            } else {
-            	
-                pAnterior->pSiguiente = pActual->pSiguiente;
-                
-                if (pActual == *pUltimo) {
-                	
-                    *pUltimo = pAnterior;
-                    
-                }
-                
-            }
-            
-            free(pActual);
-            
-            printf("\nEl registro del cliente se borr%c de forma correcta", 162);
-            
-        } else {
-        	
-            printf("\nNo se realizara la funci%cn", 162);
-            
-        }
-        
-    }
-    
+		if (cOpcion == 'S' || cOpcion == 's') {
+			
+			if (pActual == *pPrimero) {
+				
+				*pPrimero = (*pPrimero)->pSiguiente;
+				
+				if (*pPrimero == NULL) *pUltimo = NULL;
+				
+			} else {
+				
+				pAnterior->pSiguiente = pActual->pSiguiente;
+				
+				if (pActual == *pUltimo) {
+					
+					*pUltimo = pAnterior;
+					
+				}
+				
+			}
+			
+			free(pActual);
+			
+			GoToXY(40, 25); printf("El registro del cliente se borro correctamente");
+			
+		} else {
+			
+			GoToXY(40, 25); printf("No se realizara la funcion");
+			
+		}
+		
+	}
+	system("pause");
+	
 } //DarBajaCliente
 
 void ModificarCliente(TpCliente pPrimero) {
 	
 	//Variables
-    int eIdBuscar;
-    char cOpcion;
-    TpCliente pAuxiliar;
+	int eIdBuscar;
+	char cOpcion;
+	TpCliente pAuxiliar;
 
-    if (ListaVacia(pPrimero)) {
-    	
-        printf("\nNo hay clientes para modificar");
-           
-    }
+	system("cls");
+	DibujarMarco(2, 1, 117, 28);
+	CentrarTexto(3, "MODIFICAR CLIENTE");
 
-    printf("\n Ingrese el ID del cliente a modificar: ");
-    scanf("%d", &eIdBuscar);
-    fflush(stdin);
+	if (ListaVacia(pPrimero)) {
+		
+		GoToXY(40, 12); printf("No hay clientes para modificar");
+		system("pause");
+		return;
+	}
 
-    pAuxiliar = pPrimero;
+	GoToXY(40, 10); printf("Ingrese el ID del cliente: ");
+	scanf("%d", &eIdBuscar);
+	fflush(stdin);
 
-    while (pAuxiliar != NULL && pAuxiliar->eId != eIdBuscar) {
-    	
-        pAuxiliar = pAuxiliar->pSiguiente;
-        
-    }
+	pAuxiliar = pPrimero;
 
-    if (pAuxiliar == NULL) {
-    	
-        printf("\nError: El ID (%d) no existe", eIdBuscar);
-        
-    } else {
+	while (pAuxiliar != NULL && pAuxiliar->eId != eIdBuscar) {
+		
+		pAuxiliar = pAuxiliar->pSiguiente;
+		
+	}
 
-        printf("\n-- Datos del cliente --");
-        printf("\nID: %d", pAuxiliar->eId);
-        printf("\nNombre: %s", pAuxiliar->sNombre);
-        printf("\nTelefono: %s \n", pAuxiliar->sTelefono);
+	if (pAuxiliar == NULL) {
+		
+		GoToXY(40, 12); printf("Error: El ID (%d) no existe", eIdBuscar);
+		
+	} else {
 
-        printf("\n øDesea modificar a este cliente? (S/N): ");
-        scanf(" %c", &cOpcion);
-        fflush(stdin);
+		DibujarMarco(35, 12, 85, 20);
+		GoToXY(40, 14); printf("ID: %d", pAuxiliar->eId);
+		GoToXY(40, 16); printf("Nombre: %s", pAuxiliar->sNombre);
+		GoToXY(40, 18); printf("Telefono: %s", pAuxiliar->sTelefono);
 
-        if (cOpcion == 'S' || cOpcion == 's') {
+		GoToXY(40, 22); printf("Desea modificar a este cliente? (S/N): ");
+		scanf(" %c", &cOpcion);
+		fflush(stdin);
 
-            printf("\n---Modificando Cliente---");
-            
-            printf("\nIngrese el nuevo nombre: ");
-            gets(pAuxiliar->sNombre);
-            
-            printf("\nIngrese nuevo telefono: ");
-            gets(pAuxiliar->sTelefono);
+		if (cOpcion == 'S' || cOpcion == 's') {
 
-            if (strlen(pAuxiliar->sNombre) > 0) {
-            	
-                printf("\nEl registro se modific%c de manera correcta", 162);
-                
-            } else {
-            	
-                printf("\nError al guardar los datos. Intente de nuevo\n");
-            }
+			system("cls");
+			DibujarMarco(2, 1, 117, 28);
+			DibujarMarco(30, 8, 90, 18);
+			CentrarTexto(10, "NUEVOS DATOS");
+			
+			GoToXY(40, 12); printf("Ingrese el nuevo nombre: ");
+			gets(pAuxiliar->sNombre);
+			
+			GoToXY(40, 14); printf("Ingrese nuevo telefono: ");
+			gets(pAuxiliar->sTelefono);
 
-        } else if (cOpcion == 'N' || cOpcion == 'n') {
-        	
-            printf("\n No se realizara la funci%cn", 162);
-            
-        } else {
-        	
-            printf("\nNo se realizara la funci%cn", 162);
-            
-        }
-        
-    }
-    
+			if (strlen(pAuxiliar->sNombre) > 0) {
+				
+				GoToXY(40, 24); printf("El registro se modifico de manera correcta");
+				
+			} else {
+				
+				GoToXY(40, 24); printf("Error al guardar los datos.");
+			}
+
+		} else if (cOpcion == 'N' || cOpcion == 'n') {
+			
+			GoToXY(40, 24); printf("No se realizara la funcion");
+			
+		} else {
+			
+			GoToXY(40, 24); printf("No se realizara la funcion");
+			
+		}
+		
+	}
+	system("pause");
+	
 } //ModificarCliente
 
 void ConsultarCliente(TpCliente pPrimero) {
 	
-    // Variables
-    int eIdBuscar;
-    TpCliente pAuxiliar;
-    int lEncontrado = 0; 
+	// Variables
+	int eIdBuscar;
+	TpCliente pAuxiliar;
+	int lEncontrado = 0; 
 
-    if (ListaVacia(pPrimero)) {
-    	
-        printf("\nNo hay clientes que consultar");
-        return;
-        
-    }
+	system("cls");
+	DibujarMarco(2, 1, 117, 28);
+	CentrarTexto(3, "CONSULTA DE CLIENTE");
 
-    printf("\nIngrese el ID del cliente que desea consultar: ");
-    scanf("%d", &eIdBuscar);
-    fflush(stdin);
+	if (ListaVacia(pPrimero)) {
+		
+		GoToXY(40, 12); printf("No hay clientes que consultar");
+		system("pause");
+		return;
+	}
 
-    pAuxiliar = pPrimero;
+	GoToXY(40, 10); printf("Ingrese el ID del cliente: ");
+	scanf("%d", &eIdBuscar);
+	fflush(stdin);
 
-    while (pAuxiliar != NULL) {
-        
-        if (pAuxiliar->eId == eIdBuscar) {
+	pAuxiliar = pPrimero;
 
-            printf("\n-- Datos del cliente --");
-            printf("\nID: %d", pAuxiliar->eId);
-            printf("\nNombre: %s", pAuxiliar->sNombre);
-            printf("\nTelefono: %s \n", pAuxiliar->sTelefono);
-            
-            lEncontrado = 1;
-            break;
-        }
-        
-        pAuxiliar = pAuxiliar->pSiguiente;
-    }
+	while (pAuxiliar != NULL) {
+		
+		if (pAuxiliar->eId == eIdBuscar) {
 
-    if (lEncontrado == 0) {
-        printf("\n El cliente con ID %d no existe\n", eIdBuscar);
-        
-    }
+			DibujarMarco(35, 12, 85, 20);
+			CentrarTexto(13, "DATOS ENCONTRADOS");
+			GoToXY(40, 15); printf("ID: %d", pAuxiliar->eId);
+			GoToXY(40, 17); printf("Nombre: %s", pAuxiliar->sNombre);
+			GoToXY(40, 19); printf("Telefono: %s", pAuxiliar->sTelefono);
+			
+			lEncontrado = 1;
+			break;
+		}
+		
+		pAuxiliar = pAuxiliar->pSiguiente;
+	}
+
+	if (lEncontrado == 0) {
+		GoToXY(40, 14); printf("El cliente con ID %d no existe", eIdBuscar);
+		
+	}
+	system("pause");
 
 } //ConsultarCliente
 
 void GuardarArchivo(TpCliente pPrimero) {
 	
-    FILE *pFile;
-    
-    TpCliente pAuxiliar = pPrimero;
+	FILE *pFile;
+	
+	TpCliente pAuxiliar = pPrimero;
 
-    pFile = fopen("clientes.dat", "wb"); 
-    
-    if (pFile == NULL) {
-    	
-        printf("\nError al abrir el archivo para guardar");
-        
-    }
+	pFile = fopen("clientes.dat", "wb"); 
+	
+	if (pFile == NULL) {
+		
+		printf("\nError al abrir el archivo para guardar");
+		return;
+		
+	}
 
-    while (pAuxiliar != NULL) {
+	while (pAuxiliar != NULL) {
 
-        fwrite(pAuxiliar, sizeof(TrCliente), 1, pFile);
-        
-        pAuxiliar = pAuxiliar->pSiguiente;
-        
-    }
+		fwrite(pAuxiliar, sizeof(TrCliente), 1, pFile);
+		
+		pAuxiliar = pAuxiliar->pSiguiente;
+		
+	}
 
-    fclose(pFile);
-
-    printf("\nDatos guardados en 'clientes.dat' correctamente");
-    
+	fclose(pFile);
+	
 } //GuardarArchivo
 
 void CargarArchivo(TpCliente *pPrimero, TpCliente *pUltimo) {
 	
 	//Variables
-    FILE *pFile;
-    TrCliente rTemp;
-    TpCliente pNuevo;
+	FILE *pFile;
+	TrCliente rTemp;
+	TpCliente pNuevo;
 
-    pFile = fopen("clientes.dat", "rb");
-    
-    while (fread(&rTemp, sizeof(TrCliente), 1, pFile)) {
+	pFile = fopen("clientes.dat", "rb");
+	
+	if (pFile == NULL) return;
+	
+	while (fread(&rTemp, sizeof(TrCliente), 1, pFile)) {
  
-        if (!ListaLlena(&pNuevo)) {
-        	
+		if (!ListaLlena(&pNuevo)) {
 
-            pNuevo->eId = rTemp.eId;
-            strcpy(pNuevo->sNombre, rTemp.sNombre);
-            strcpy(pNuevo->sTelefono, rTemp.sTelefono);
-            pNuevo->pSiguiente = NULL;
+			pNuevo->eId = rTemp.eId;
+			strcpy(pNuevo->sNombre, rTemp.sNombre);
+			strcpy(pNuevo->sTelefono, rTemp.sTelefono);
+			pNuevo->pSiguiente = NULL;
 
-            if (ListaVacia(*pPrimero)) {
-            	
-                AgregarEnListaVacia(pPrimero, pUltimo, pNuevo);
-                
-            } else {
-            	
-                AgregarDespuesDeUltimo(pUltimo, pNuevo);
-                
-            }
-            
-        }
-        
-    }
+			if (ListaVacia(*pPrimero)) {
+				
+				AgregarEnListaVacia(pPrimero, pUltimo, pNuevo);
+				
+			} else {
+				
+				AgregarDespuesDeUltimo(pUltimo, pNuevo);
+				
+			}
+			
+		}
+		
+	}
 
-    fclose(pFile);
-    
-    printf("\nDatos cargados exitosamente desde el archivo");
-    
+	fclose(pFile);
+	
 } //CargarArchivo
